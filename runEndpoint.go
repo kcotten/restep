@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// Listen and serve the endpoint
 func runHttpEndpoint(a *a.App) {
 	setupCloseHandler()
 
@@ -25,7 +26,7 @@ func runHttpEndpoint(a *a.App) {
 
 // Handle exit signal
 func setupCloseHandler() {
-	c := make(chan os.Signal)
+	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
