@@ -12,6 +12,7 @@ func Test_main(t *testing.T) {
 
 	// allow for server to start
 	time.Sleep(1 * time.Second)
+	// Some systems may use ipv6 locally
 	// url := "http://localhost:8000" + "/info"
 	urlIpv6 := "http://[::1]:8000" + "/info"
 	rr, err := http.Get(urlIpv6)
