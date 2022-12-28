@@ -2,7 +2,9 @@ package router
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+	"os"
 
 	hr "github.com/julienschmidt/httprouter"
 )
@@ -10,20 +12,29 @@ import (
 // Router struct
 type App struct {
 	Router *hr.Router
+	Port   string
+	logger log.Logger
 }
 
 // Initialize the router to return sample JSON
 func (a *App) Init() {
+	var ok bool
 	a.Router = hr.New()
 	ExampleRet = example()
-	a.Router.HandlerFunc("GET", "/info", handleRest)
+	a.Router.HandlerFunc("GET", "/info", a.HandleRest)
+	if a.Port, ok = os.LookupEnv("ROUTER_PORT"); !ok {
+		a.Port = "8000"
+	}
+	a.logger = *log.Default()
+	a.logger.Println("Application initialized with port: ", a.Port)
 }
 
 // Run the router at the provided address
 func (a *App) Run(addr string) {}
 
 // Router handler for incoming rest requests
-func handleRest(w http.ResponseWriter, r *http.Request) {
+func (a *App) HandleRest(w http.ResponseWriter, r *http.Request) {
+	a.logger.Println("Handling request: ", r)
 	if ExampleRet == nil {
 		err := json.NewEncoder(w).Encode(example())
 		if err != nil {

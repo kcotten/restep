@@ -11,12 +11,12 @@ import (
 )
 
 // Listen and serve the endpoint
-func runHttpEndpoint(a *a.App) {
+func runHttpEndpoint(app *a.App) {
 	setupCloseHandler()
 
 	srv := &http.Server{
-		Handler: a.Router,
-		Addr:    ":8000",
+		Handler: app.Router,
+		Addr:    ":" + app.Port,
 		// Enforce timeouts for server
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

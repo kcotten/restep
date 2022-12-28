@@ -6,13 +6,11 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-
-	hr "github.com/julienschmidt/httprouter"
 )
 
 var result = `[{"item":"item1","quantity":"3"},{"item":"item2","quantity":"7"}]`
 
-func Test_handleRest(t *testing.T) {
+func Test_HandleRest(t *testing.T) {
 	// Create a request to pass to the handler
 	req, err := http.NewRequest("GET", "/info", nil)
 	if err != nil {
@@ -21,20 +19,19 @@ func Test_handleRest(t *testing.T) {
 
 	// Record the response
 	w := httptest.NewRecorder()
-	r := hr.New()
-	r.HandlerFunc("GET", "/info", handleRest)
-	// handleRest(w, req)
-	r.ServeHTTP(w, req)
+	r := App{}
+	r.Init()
+	r.Router.ServeHTTP(w, req)
 
 	// Check the status code
 	if status := w.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
+		t.Errorf("handler returned incorrect status code: got %v want %v",
 			status, http.StatusOK)
 	}
 
 	// Check response
 	if strings.Compare(w.Body.String(), result) == 0 {
-		t.Errorf("handler returned wrong json: got %v want %v",
+		t.Errorf("handler returned incorrect json: got %v want %v",
 			w.Body.String(), result)
 	}
 }
@@ -47,7 +44,7 @@ func Test_example(t *testing.T) {
 	}
 	// Check response
 	if string(val[:]) != result {
-		t.Errorf("handler returned wrong json: got %v want %v",
+		t.Errorf("handler returned incorrect json: got %v want %v",
 			resp, result)
 	}
 }
@@ -68,7 +65,7 @@ func Test_Init(t *testing.T) {
 
 	// Check the status code
 	if status := w.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
+		t.Errorf("handler returned incorrect status code: got %v want %v",
 			status, http.StatusOK)
 	}
 }
