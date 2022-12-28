@@ -4,19 +4,19 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	hr "github.com/julienschmidt/httprouter"
 )
 
-// Mux router struct
+// Router struct
 type App struct {
-	Router *mux.Router
+	Router *hr.Router
 }
 
-// Initialize the router to sample JSON
+// Initialize the router to return sample JSON
 func (a *App) Init() {
-	a.Router = mux.NewRouter()
+	a.Router = hr.New()
 	ExampleRet = example()
-	a.Router.HandleFunc("/info", handleRest).Methods("GET")
+	a.Router.HandlerFunc("GET", "/info", handleRest)
 }
 
 // Run the router at the provided address
