@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gorilla/mux"
+	hr "github.com/julienschmidt/httprouter"
 )
 
 var result = `[{"item":"item1","quantity":"3"},{"item":"item2","quantity":"7"}]`
@@ -21,8 +21,8 @@ func Test_handleRest(t *testing.T) {
 
 	// Record the response
 	w := httptest.NewRecorder()
-	r := mux.NewRouter()
-	r.HandleFunc("/info", handleRest).Methods("GET")
+	r := hr.New()
+	r.HandlerFunc("GET", "/info", handleRest)
 	// handleRest(w, req)
 	r.ServeHTTP(w, req)
 
