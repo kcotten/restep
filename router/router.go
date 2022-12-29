@@ -10,41 +10,34 @@ import (
 )
 
 // Router struct
-type App struct {
+type Router struct {
 	Router *hr.Router
 	Port   string
 	logger log.Logger
 }
 
 // Initialize the router to return sample JSON
-func (a *App) Init() {
+func (router *Router) Init() {
 	var ok bool
-	a.Router = hr.New()
+	router.Router = hr.New()
 	ExampleRet = example()
-	a.Router.HandlerFunc("GET", "/info", a.HandleRest)
-	if a.Port, ok = os.LookupEnv("ROUTER_PORT"); !ok {
-		a.Port = "8000"
+	router.Router.HandlerFunc("GET", "/info", router.HandleRest)
+	if router.Port, ok = os.LookupEnv("ROUTER_PORT"); !ok {
+		router.Port = "8000"
 	}
-	a.logger = *log.Default()
-	a.logger.Println("Application initialized with port: ", a.Port)
+	router.logger = *log.Default()
+	router.logger.Println("Application initialized with port: ", router.Port)
 }
 
 // Run the router at the provided address
-func (a *App) Run(addr string) {}
+func (router *Router) Run(addr string) {}
 
 // Router handler for incoming rest requests
-func (a *App) HandleRest(w http.ResponseWriter, r *http.Request) {
-	a.logger.Println("Handling request: ", r)
-	if ExampleRet == nil {
-		err := json.NewEncoder(w).Encode(example())
-		if err != nil {
-			panic(err)
-		}
-	} else {
-		err := json.NewEncoder(w).Encode(ExampleRet)
-		if err != nil {
-			panic(err)
-		}
+func (router *Router) HandleRest(w http.ResponseWriter, r *http.Request) {
+	router.logger.Println("Handling request: ", r)
+	err := json.NewEncoder(w).Encode(ExampleRet)
+	if err != nil {
+		panic(err)
 	}
 }
 

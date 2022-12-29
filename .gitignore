@@ -20,3 +20,4 @@ env
 restep
 target
 badge.svg
+coverage.*

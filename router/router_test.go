@@ -19,7 +19,7 @@ func Test_HandleRest(t *testing.T) {
 
 	// Record the response
 	w := httptest.NewRecorder()
-	r := App{}
+	r := Router{}
 	r.Init()
 	r.Router.ServeHTTP(w, req)
 
@@ -50,7 +50,7 @@ func Test_example(t *testing.T) {
 }
 
 func Test_Init(t *testing.T) {
-	app := App{}
+	app := Router{}
 	app.Init()
 
 	// Create a request to pass to the handler
