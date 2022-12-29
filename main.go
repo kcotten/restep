@@ -1,12 +1,12 @@
 package main
 
 import (
-	a "restep/app"
+	a "restep/router"
 )
 
 // Entry point for the rest ep
 func main() {
-	app := a.App{}
-	app.Init()
-	runHttpEndpoint(&app)
+	router := a.Router{}
+	router.Init()
+	runHttpEndpoint(&router)
 }

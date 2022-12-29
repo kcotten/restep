@@ -5,18 +5,18 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	a "restep/app"
+	r "restep/router"
 	"syscall"
 	"time"
 )
 
 // Listen and serve the endpoint
-func runHttpEndpoint(app *a.App) {
+func runHttpEndpoint(router *r.Router) {
 	setupCloseHandler()
 
 	srv := &http.Server{
-		Handler: app.Router,
-		Addr:    ":" + app.Port,
+		Handler: router.Router,
+		Addr:    ":" + router.Port,
 		// Enforce timeouts for server
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
