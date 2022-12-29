@@ -7,6 +7,7 @@ import (
 	"os"
 
 	hr "github.com/julienschmidt/httprouter"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Router struct
@@ -27,6 +28,8 @@ func (router *Router) Init() {
 	}
 	router.logger = *log.Default()
 	router.logger.Println("Application initialized with port: ", router.Port)
+	router.Router.Handler("GET", "/metrics", promhttp.Handler())
+	promInit()
 }
 
 // Run the router at the provided address
@@ -34,11 +37,18 @@ func (router *Router) Run(addr string) {}
 
 // Router handler for incoming rest requests
 func (router *Router) HandleRest(w http.ResponseWriter, r *http.Request) {
+	var status string
+	timer := getTimer(status)
+	defer func() {
+		getRequestCounter.WithLabelValues(status).Inc()
+		timer.ObserveDuration()
+	}()
 	router.logger.Println("Handling request: ", r)
 	err := json.NewEncoder(w).Encode(ExampleRet)
 	if err != nil {
 		panic(err)
 	}
+	status = "success"
 }
 
 // Example go<=>json for endpoint to return
