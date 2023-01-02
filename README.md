@@ -28,7 +28,7 @@ You could apply the configuration with `k apply -f <filename>.yaml`.
 
 ----
 
-> ℹ️ The following provide an overview of some of the things the currently restep includes as an example. Ideally, both will become inputs in a future pull request
+> ℹ️ The following provide an overview of some of the things the restep includes as an example. Ideally, these would become inputs in a future pull request
 
 ## Prometheus Client
 Example of exporting metrics to Prometheus that will be available at `localhost:8000/metrics` with no expectation that prometheus is running.
